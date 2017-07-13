@@ -51,9 +51,13 @@ public class CirclePieAct extends AppCompatActivity {
                 break;
             case 1://流式布局——标签墙
                 contentView=new FlowLayouView(this);
-                contentView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+//                contentView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                ((FlowLayouView)contentView).setHorizontalSpace(20);
+                ((FlowLayouView)contentView).setVerticalSpace(30);
                 FrameLayout.LayoutParams params01 = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
                 contentView.setLayoutParams(params01);
+                ((FlowLayouView) contentView).setSameSpan(true);
+                ((FlowLayouView) contentView).initDatas();
                 break;
             default:
                 contentView = new TextView(this);
