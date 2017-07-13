@@ -1,4 +1,4 @@
-package com.cy.circlepie;
+package com.cy.circlepie.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,9 +9,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.cy.circlepie.PieItemBean;
+import com.cy.circlepie.UIUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -77,7 +79,7 @@ public class CirclePieView extends View {
     }
 
     private int measureValue(int measureSpec) {
-        int result = 100;//设置最小值
+        int result = UIUtils.dip2dx(getContext(),250);//设置最小值
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
         if (specMode == MeasureSpec.EXACTLY) { //fill_parent或者设置了具体的宽高
@@ -96,9 +98,9 @@ public class CirclePieView extends View {
         int height = getMeasuredHeight();
         int rWidth = width - getPaddingLeft() - getPaddingRight();
         int rHeight = height - getPaddingTop() - getPaddingBottom();
-        mRadious = Math.min(rWidth, rHeight) / 2;
-        cenX = mRadious + getPaddingLeft();
-        cenY = mRadious + getPaddingTop();
+        mRadious = Math.min(rWidth, rHeight)*1 / 3;
+        cenX = Math.min(rWidth, rHeight)/2;
+        cenY = cenX;
         //用于存放当前百分比的圆心角度
         float currentAngle = 0.0f;
         float offsetAngle = 0f;
@@ -108,13 +110,13 @@ public class CirclePieView extends View {
             currentAngle = per2Radious(totalAngle, bean.value);//得到当前角度
             mPaint.setColor(bean.color);//给画笔设置颜色
             if (mRectF == null) {//设置圆所需的范围
-                mRectF = new RectF(getPaddingLeft(), getPaddingTop(), width - getPaddingRight(), width - getPaddingRight());
+                mRectF = new RectF(cenX-mRadious, cenX-mRadious, cenX+mRadious, cenX+mRadious);
             }
             if (selectedPos == i) {//选中的偏离一点儿
                 canvas.save();
                 canvas.translate(cenX, cenY);//将画布平移到圆心
                 canvas.rotate(offsetAngle + currentAngle / 2);//先将画布x轴旋转到当前角度的一半位置，
-                canvas.translate(50, 0);//然后在平移50个单位，就将被选中的模块独立出来了
+                canvas.translate(20, 0);//然后在平移50个单位，就将被选中的模块独立出来了
                 RectF rcf = new RectF(-mRadious, -mRadious, mRadious, mRadious);
                 canvas.drawArc(rcf, currentAngle / 2, -currentAngle, true, mPaint);
                 //边框
@@ -131,17 +133,17 @@ public class CirclePieView extends View {
             //根据角度所在不同象限来计算出文字的起始点坐标
             float dx = 0, dy = 0;
             if (degree > 0 && degree <= 90f) {//在第四象限
-                dx = (float) (cenX + mRadious * 2.3 / 3 * Math.cos(2 * PI / 360 * degree));//注意Math.sin(x)中x为弧度值，并非数学中的角度，所以需要将角度转换为弧度
-                dy = (float) (cenY + mRadious * 2.7 / 3 * Math.sin(2 * PI / 360 * degree));
+                dx = (float) (cenX + mRadious * 2 / 3 * Math.cos(2 * PI / 360 * degree));//注意Math.sin(x)中x为弧度值，并非数学中的角度，所以需要将角度转换为弧度
+                dy = (float) (cenY + mRadious * 2.5 / 3 * Math.sin(2 * PI / 360 * degree));
             } else if (degree > 90f && degree <= 180f) {//在第三象限
-                dx = (float) (cenX - mRadious * 2.3 / 3 * Math.cos(2 * PI / 360 * (180f - degree)));
-                dy = (float) (cenY + mRadious * 2.7 / 3 * Math.sin(2 * PI / 360 * (180f - degree)));
+                dx = (float) (cenX - mRadious * 2 / 3 * Math.cos(2 * PI / 360 * (180f - degree)));
+                dy = (float) (cenY + mRadious * 2.5 / 3 * Math.sin(2 * PI / 360 * (180f - degree)));
             } else if (degree > 180f && degree <= 270f) {//在第二象限
-                dx = (float) (cenX - mRadious * 2.3 / 3 * Math.cos(2 * PI / 360 * (270f - degree)));
-                dy = (float) (cenY - mRadious * 2.7 / 3 * Math.sin(2 * PI / 360 * (270f - degree)));
+                dx = (float) (cenX - mRadious * 2 / 3 * Math.cos(2 * PI / 360 * (270f - degree)));
+                dy = (float) (cenY - mRadious * 2.5 / 3 * Math.sin(2 * PI / 360 * (270f - degree)));
             } else {
-                dx = (float) (cenX + mRadious * 2.3 / 3 * Math.cos(2 * PI / 360 * (360f - degree)));
-                dy = (float) (cenY - mRadious * 2.7 / 3 * Math.sin(2 * PI / 360 * (360f - degree)));
+                dx = (float) (cenX + mRadious * 2 / 3 * Math.cos(2 * PI / 360 * (360f - degree)));
+                dy = (float) (cenY - mRadious * 2.5 / 3 * Math.sin(2 * PI / 360 * (360f - degree)));
             }
             //文字的基本线坐标设置为半径的2.3/3位置处，起点y坐标设置为半径的2.7/3位置处
             canvas.drawText(bean.value + "%", dx, dy, mPaintBorder);
