@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/13.
+ * 流式布局
  */
 
 public class FlowLayouView extends ViewGroup {
@@ -128,9 +129,6 @@ public class FlowLayouView extends ViewGroup {
         for (int i = 0; i < mLines.size(); i++) {
             LineBean lineBean = mLines.get(i);
             int left = horizontalSpace;
-//            if(isSameSpan){
-//                leftS+=(getMeasuredWidth()-lineBean.width)/(lineBean.items.size()-1);
-//            }
             for (int j = 0; j < lineBean.items.size(); j++) {
                 View child = lineBean.items.get(j);
                 if(isSameSpan&&j!=0){

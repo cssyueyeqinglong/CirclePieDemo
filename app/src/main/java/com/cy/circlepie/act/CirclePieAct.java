@@ -1,4 +1,4 @@
-package com.cy.circlepie;
+package com.cy.circlepie.act;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.cy.circlepie.R;
 import com.cy.circlepie.view.CirclePieView;
 import com.cy.circlepie.view.FlowLayouView;
 
@@ -17,7 +18,6 @@ import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/6/28.
- * view实体类
  */
 
 public class CirclePieAct extends AppCompatActivity {
@@ -56,9 +56,12 @@ public class CirclePieAct extends AppCompatActivity {
                 ((FlowLayouView)contentView).setVerticalSpace(30);
                 FrameLayout.LayoutParams params01 = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
                 contentView.setLayoutParams(params01);
-                ((FlowLayouView) contentView).setSameSpan(true);
+//                ((FlowLayouView) contentView).setSameSpan(true);//设置多余空间是否均分
                 ((FlowLayouView) contentView).initDatas();
                 break;
+//            case 2://拼图游戏
+//                contentView=new PictureGameAct(this);
+//                break;
             default:
                 contentView = new TextView(this);
                 ((TextView) contentView).setText("你好哟，欢迎光临");
