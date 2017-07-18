@@ -299,7 +299,7 @@ public class PictureGameAct extends AppCompatActivity {
      * @return
      */
     private boolean couldChange(PicItemBean bean) {
-        if (bean.itemId / TYPE == mBlackItem.itemId / TYPE) {//在同一行
+        if ((bean.itemId-1) / TYPE == (mBlackItem.itemId-1) / TYPE) {//在同一行
             return Math.abs(bean.itemId - mBlackItem.itemId) == 1;
         } else {//不在同一行
             return Math.abs(bean.itemId - mBlackItem.itemId) == TYPE;
