@@ -32,11 +32,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(String item, int position) {
                 Intent intent = new Intent();
-                if(position<2){
+                if(position<3){
                     intent.setClass(MainActivity.this, CirclePieAct.class);
                     intent.putExtra(CirclePie_TYPE,position);
                     intent.putExtra(CirclePie_TITLE,item);
-                }else if(position==2){//拼图游戏
+                }else if(position==3){//拼图游戏
                     intent.setClass(MainActivity.this, PictureGameAct.class);
                 }
 

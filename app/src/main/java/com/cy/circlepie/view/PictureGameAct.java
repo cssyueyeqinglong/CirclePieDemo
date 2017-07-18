@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -300,12 +299,11 @@ public class PictureGameAct extends AppCompatActivity {
      * @return
      */
     private boolean couldChange(PicItemBean bean) {
-        if (Math.abs(bean.itemId - mBlackItem.itemId) == TYPE) {
-            return true;//不同行的时候两个相差3就可以交换
-        } else if (Math.abs(bean.itemId - mBlackItem.itemId) == 1) {//同行相差1
-            return true;
+        if (bean.itemId / TYPE == mBlackItem.itemId / TYPE) {//在同一行
+            return Math.abs(bean.itemId - mBlackItem.itemId) == 1;
+        } else {//不在同一行
+            return Math.abs(bean.itemId - mBlackItem.itemId) == TYPE;
         }
-        return false;
     }
 
     /**
