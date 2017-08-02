@@ -6,16 +6,17 @@
     android:orientation="vertical"
     tools:context="com.cy.circlepie.act.MainActivity">
 
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteTextView"
+        android:layout_width="match_parent"
+        android:completionThreshold="2"
+        android:layout_height="wrap_content"
+        android:text="AutoCompleteTextView" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rcv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none" />
-
-    <com.cy.circlepie.view.CirclePieView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="20dp" />
-
 
 </LinearLayout>

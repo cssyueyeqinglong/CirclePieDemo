@@ -1,8 +1,11 @@
 package com.cy.circlepie.act;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -24,6 +27,8 @@ import butterknife.OnClick;
  */
 
 public class CirclePieAct extends AppCompatActivity {
+    private String TAG = this.getClass().getSimpleName();
+
     @OnClick(R.id.iv_back)
     public void back(View view) {
         finish();
@@ -74,5 +79,6 @@ public class CirclePieAct extends AppCompatActivity {
                 break;
         }
         mFlView.addView(contentView);
+
     }
 }
