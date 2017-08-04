@@ -6,4 +6,5 @@
         <item>2048小游戏</item>
         <item>拼图游戏</item>
     </string-array>
+    <string name="title_activity_view_pager">ViewPagerActivity</string>
 </resources>

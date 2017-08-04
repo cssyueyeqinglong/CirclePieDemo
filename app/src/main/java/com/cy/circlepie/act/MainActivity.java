@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 edit.putString("name", datas[position]);
                 edit.commit();
 //                android.os.Process.killProcess(android.os.Process.myPid());
+                startActivity(new Intent(MainActivity.this,ViewPagerActivity.class));
 
             }
         });
