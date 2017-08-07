@@ -34,8 +34,13 @@ import java.util.Map;
 public class ViewPagerActivity extends AppCompatActivity {
     private float mMinScale = 0.85f;//viewpager图片的缩放比例
     public static final float DEFAULT_CENTER = 0.5f;
+    public static final int TYPE_STICKY = 1;
+    public static final int TYPE_NORMAL = 0;
     private RecyclerView mRecyclerView;
     private String[] data;
+    private RecyclerView mRcvSticky;
+    private List<StickyBean> stickyDatas;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,40 +52,83 @@ public class ViewPagerActivity extends AppCompatActivity {
         data = new String[]{"a", "b", "c"};
         viewPager.setAdapter(new BitmapAdapter(new ArrayList<String>(Arrays.asList(data)), this));
         viewPager.setPageTransformer(true, new ScaleInTransformer());
+
+
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        final StickyItemDection floatingItemDecoration = new StickyItemDection(this);
-        Map<Integer, String> keys = new HashMap<>();
-        keys.put(3, "呵呵");
-        floatingItemDecoration.setKeys(keys);
-        floatingItemDecoration.setmTitleHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()));
-        mRecyclerView.addItemDecoration(floatingItemDecoration);
-
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(new ViewAdapter());
-        int itemCount = mRecyclerView.getAdapter().getItemCount();
-        Log.d("count", "count:" + itemCount);
+
+        mRcvSticky = (RecyclerView) findViewById(R.id.recycler_sticky);
+        mRcvSticky.setLayoutManager(new LinearLayoutManager(ViewPagerActivity.this, LinearLayoutManager.HORIZONTAL, false));
+        stickyDatas = new ArrayList<>();
+        stickyDatas.add(new StickyBean("风花雪月", 0));
+        stickyDatas.add(new StickyBean("十里飘香", 0));
+        stickyDatas.add(new StickyBean("龙飞凤舞", 0));
+        stickyDatas.add(new StickyBean("春花秋月", 0));
+        stickyDatas.add(new StickyBean("花前月下", 0));
+        stickyDatas.add(new StickyBean("风驰电掣", 0));
+        stickyDatas.add(new StickyBean("雾里看花", 0));
+        stickyDatas.add(new StickyBean("吹角连营", 0));
+        stickyDatas.add(new StickyBean("张灯结彩", 0));
+        mRcvSticky.setAdapter(new StickyAdapter(stickyDatas));
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstItem = mLayoutManager.findFirstVisibleItemPosition();
+                mRcvSticky.setVisibility(firstItem >= 6 ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 
-    private class ViewAdapter extends RecyclerView.Adapter<TestViewHolder> {
+    private class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
-        public TestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            TextView tv = new TextView(ViewPagerActivity.this);
-            tv.setGravity(Gravity.CENTER);
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2dx(50));
-            tv.setLayoutParams(params);
-            return new TestViewHolder(tv);
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            RecyclerView.ViewHolder mHolder;
+            if (viewType == TYPE_STICKY) {//吸附效果的item
+                RecyclerView rcv = new RecyclerView(ViewPagerActivity.this);
+                ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2dx(50));
+                rcv.setLayoutParams(params);
+                rcv.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                mHolder = new StickyViewHolder(rcv);
+            } else {
+                TextView tv = new TextView(ViewPagerActivity.this);
+                tv.setGravity(Gravity.CENTER);
+                ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2dx(50));
+                tv.setLayoutParams(params);
+                mHolder = new TestViewHolder(tv);
+            }
+            return mHolder;
         }
 
         @Override
-        public void onBindViewHolder(TestViewHolder holder, int position) {
-            ((TextView) holder.itemView).setText("位置：" + position);
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if (getItemViewType(position) == TYPE_STICKY) {//吸附
+                RecyclerView rcv = (RecyclerView) holder.itemView;
+                rcv.setLayoutManager(new LinearLayoutManager(ViewPagerActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                rcv.setAdapter(new StickyAdapter(stickyDatas));
+
+            } else {
+                ((TextView) holder.itemView).setText("位置：" + position);
+            }
         }
 
         @Override
         public int getItemCount() {
-            return data.length * 6;
+            return data.length * 10;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position == 6 ? TYPE_STICKY : TYPE_NORMAL;
         }
     }
 
@@ -91,6 +139,51 @@ public class ViewPagerActivity extends AppCompatActivity {
         }
     }
 
+    private class StickyViewHolder extends RecyclerView.ViewHolder {
+
+        public StickyViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    private class StickyAdapter extends RecyclerView.Adapter<TestViewHolder> {
+        List<StickyBean> datas;
+
+        StickyAdapter(List<StickyBean> datas) {
+            this.datas = datas;
+        }
+
+        @Override
+        public TestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            TextView tv = new TextView(ViewPagerActivity.this);
+            tv.setGravity(Gravity.CENTER);
+            tv.setLines(1);
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(dp2dx(80), ViewGroup.LayoutParams.MATCH_PARENT);
+            tv.setLayoutParams(params);
+
+            return new TestViewHolder(tv);
+        }
+
+        @Override
+        public void onBindViewHolder(TestViewHolder holder, int position) {
+            TextView tv = (TextView) holder.itemView;
+            tv.setText(datas.get(position).content);
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mLayoutManager.scrollToPositionWithOffset(15, dp2dx(50));
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return datas.size();
+        }
+    }
+
+
+    //轮播图片的适配器
     private class BitmapAdapter extends PagerAdapter {
         private List<String> datas;
         private Context context;
@@ -172,5 +265,15 @@ public class ViewPagerActivity extends AppCompatActivity {
 
     public int dp2dx(int value) {
         return ((int) (getResources().getDisplayMetrics().density * value));
+    }
+
+    class StickyBean {
+        String content;
+        int type;
+
+        public StickyBean(String content, int type) {
+            this.content = content;
+            this.type = type;
+        }
     }
 }

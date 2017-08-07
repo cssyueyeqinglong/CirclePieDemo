@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra(CirclePie_TITLE, item);
                 } else if (position == 3) {//拼图游戏
                     intent.setClass(MainActivity.this, PictureGameAct.class);
+                } else if (position == 4) {//吸附点击的recyclerview
+                    intent.setClass(MainActivity.this, ViewPagerActivity.class);
                 }
 
                 startActivity(intent);
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 edit.putString("name", datas[position]);
                 edit.commit();
 //                android.os.Process.killProcess(android.os.Process.myPid());
-                startActivity(new Intent(MainActivity.this,ViewPagerActivity.class));
+                startActivity(new Intent(MainActivity.this, ViewPagerActivity.class));
 
             }
         });

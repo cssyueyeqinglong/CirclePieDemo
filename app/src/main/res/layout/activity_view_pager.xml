@@ -6,12 +6,12 @@
     android:orientation="vertical">
 
     <FrameLayout
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_centerInParent="true"
         android:background="@color/colorAccent"
-        android:clipChildren="false">
+        android:clipChildren="false"
+        android:visibility="gone">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/id_viewpager"
@@ -24,9 +24,20 @@
 
     </FrameLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_sticky"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorAccent" />
+    </FrameLayout>
 
 </LinearLayout>
