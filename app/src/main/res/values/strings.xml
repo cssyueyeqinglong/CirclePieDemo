@@ -5,5 +5,8 @@
         <item>流式布局——标签墙</item>
         <item>2048小游戏</item>
         <item>拼图游戏</item>
+        <item>带吸附效果的RecyclerView</item>
+        <item>测试</item>
     </string-array>
+    <string name="title_activity_view_pager">ViewPagerActivity</string>
 </resources>
