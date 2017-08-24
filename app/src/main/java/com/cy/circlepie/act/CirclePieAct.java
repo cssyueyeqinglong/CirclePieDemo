@@ -38,6 +38,7 @@ public class CirclePieAct extends AppCompatActivity {
     public static final String CirclePie_TITLE = "CirclePie_TITLE";
     private int contentType;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
