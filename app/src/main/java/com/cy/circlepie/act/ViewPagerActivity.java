@@ -31,6 +31,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 带吸附效果的recyclerview
+ * 带特效的viewpager轮播图，隐藏掉了
+ */
 public class ViewPagerActivity extends AppCompatActivity {
     private float mMinScale = 0.85f;//viewpager图片的缩放比例
     public static final float DEFAULT_CENTER = 0.5f;
@@ -88,7 +92,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         });
     }
 
-    private class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public class ViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -267,7 +271,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         return ((int) (getResources().getDisplayMetrics().density * value));
     }
 
-    class StickyBean {
+    public class StickyBean {
         String content;
         int type;
 

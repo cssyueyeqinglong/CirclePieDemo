@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
                     intent.setClass(MainActivity.this, PictureGameAct.class);
                 } else if (position == 4) {//吸附点击的recyclerview
                     intent.setClass(MainActivity.this, ViewPagerActivity.class);
+                }else if(position == 5){
+                    intent.setClass(MainActivity.this, TestActivity.class);
                 }
 
                 startActivity(intent);
